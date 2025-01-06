@@ -9,6 +9,13 @@ import { AlertCircle, Play, Square, CameraOff } from 'lucide-react'
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Switch } from "@/components/ui/switch"
 
+declare global {
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    roboflow: any;
+  }
+}
+
 const PROJECT_URL = "isl-actions"
 const MODEL_VERSION = 3
 
@@ -100,7 +107,7 @@ export default function TranslatePage() {
         for (let key in cache) {
           freq[cache[key]] = key
         }
-        const last = Object.keys(freq)[Object.keys(freq).length - 1]
+        const last = parseInt(Object.keys(freq)[Object.keys(freq).length - 1], 10)
         if (counter.current % 3 === 0) {
           counter.current += 1
           res += `${freq[last]} `
