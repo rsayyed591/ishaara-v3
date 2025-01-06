@@ -10,8 +10,8 @@ import { Download, ZoomIn, ZoomOut, Copy } from 'lucide-react'
 
 const images = [
   { src: 'https://i.ibb.co/FzMMxdW/IMG-20240428-WA0006.jpg', category: 'Achievements' },
-  { src: 'https://i.ibb.co/K5Cq0GN/IMG-20240428-WA0007.jpg', category: 'Achievements' },
-  { src: 'https://i.ibb.co/Jzj16Cw/IMG-20240428-WA0008.jpg', category: 'Mentor' },
+  { src: 'https://i.ibb.co/K5Cq0GN/IMG-20240428-WA0007.jpg', category: 'Mentor' },
+  { src: 'https://i.ibb.co/Jzj16Cw/IMG-20240428-WA0008.jpg', category: 'Achievements' },
   { src: 'https://i.ibb.co/THbKfdZ/IMG-20240428-WA0009.jpg', category: 'School Survey' },
   { src: 'https://i.ibb.co/P16PHjw/IMG-20240428-WA0010.jpg', category: 'School Survey' },
   { src: 'https://i.ibb.co/bBKHHfr/IMG-20240428-WA0011.jpg', category: 'Team' },
@@ -96,7 +96,7 @@ const GalleryPage = () => {
       <h1 className="section-header text-4xl font-bold text-center mb-12">Ishaara Gallery</h1>
       
       {/* Carousel Section */}
-      <Carousel className="mb-12">
+      <Carousel className="mb-12 overflow-hidden">
         <AnimatePresence initial={false} mode="wait">
           <motion.div
             key={currentSlide}

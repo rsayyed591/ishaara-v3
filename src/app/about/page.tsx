@@ -51,7 +51,7 @@ export default function AboutPage() {
           initial={{ opacity: 0, y: 50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: index * 0.2 }}
-          className="flex flex-col md:flex-row items-center mb-16 gap-8"
+          className="flex flex-col md:flex-row items-center overflow-hidden mb-16 gap-8"
         >
           <div className={`w-full md:w-1/2 ${index % 2 === 0 ? 'md:order-1' : 'md:order-2'}`}>
             <div className="bg-card/50 p-6 rounded-lg backdrop-blur-sm">

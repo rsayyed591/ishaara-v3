@@ -191,53 +191,59 @@ export function HomeContent() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                title: "Sign to Text Conversion",
-                description: "Advanced algorithms for accurate sign language interpretation",
-                icon: <Zap className="h-8 w-8 text-white" />,
+              title: "Sign to Text Conversion",
+              description: "Advanced algorithms for accurate sign language interpretation",
+              icon: <Zap className="h-8 w-8 text-white" />,
+              gradient: "from-yellow-500 to-orange-500",
               },
               {
-                title: "Real-time Processing",
-                description: "Instant translation with minimal latency",
-                icon: <Clock className="h-8 w-8 text-white" />,
+              title: "Real-time Processing",
+              description: "Instant translation with minimal latency",
+              icon: <Clock className="h-8 w-8 text-white" />,
+              gradient: "from-green-500 to-teal-500",
               },
               {
-                title: "High Accuracy",
-                description: "Precise recognition powered by AI",
-                icon: <Target className="h-8 w-8 text-white" />,
+              title: "High Accuracy",
+              description: "Precise recognition powered by AI",
+              icon: <Target className="h-8 w-8 text-white" />,
+              gradient: "from-red-500 to-pink-500",
               },
               {
-                title: "User-friendly Interface",
-                description: "Intuitive design for seamless experience",
-                icon: <Smartphone className="h-8 w-8 text-white" />,
+              title: "User-friendly Interface",
+              description: "Intuitive design for seamless experience",
+              icon: <Smartphone className="h-8 w-8 text-white" />,
+              gradient: "from-blue-500 to-indigo-500",
               },
               {
-                title: "Multiple ISL Support",
-                description: "Support for various Indian Sign Language dialects",
-                icon: <Languages className="h-8 w-8 text-white" />,
+              title: "Multiple ISL Support",
+              description: "Support for various Indian Sign Language dialects",
+              icon: <Languages className="h-8 w-8 text-white" />,
+              gradient: "from-purple-500 to-indigo-500",
               },
               {
-                title: "Continuous Learning",
-                description: "Self-improving system for better results",
-                icon: <Brain className="h-8 w-8 text-white" />,
+              title: "Continuous Learning",
+              description: "Self-improving system for better results",
+              icon: <Brain className="h-8 w-8 text-white" />,
+              gradient: "from-pink-500 to-red-500",
               },
             ].map((feature, index) => (
               <motion.div
-                key={index}
-                className="group h-full"
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
+              key={index}
+              className="group h-full"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
               >
-                <Card className="transition-transform duration-300 group-hover:scale-105 h-full dark:bg-black/40">
-                  <CardContent className="p-6 flex flex-col items-start h-full">
-                    <div className="rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 p-3 mb-4">
-                      {feature.icon}
-                    </div>
-                    <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                    <p className="text-muted-foreground">{feature.description}</p>
-                  </CardContent>
-                </Card>
+              <Card className="transition-transform duration-300 group-hover:scale-105 h-full dark:bg-black/40">
+                <CardContent className="p-6 flex flex-col items-start h-full">
+                <div className={`rounded-lg bg-gradient-to-r ${feature.gradient} p-3 mb-4`}>
+                  {feature.icon}
+                </div>
+                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                <p className="text-muted-foreground">{feature.description}</p>
+                </CardContent>
+              </Card>
               </motion.div>
             ))}
           </div>
@@ -406,4 +412,3 @@ export function HomeContent() {
     </>
   )
 }
-
