@@ -201,7 +201,7 @@ export default function TranslatePage() {
     formdata.append("text", words)
 
     try {
-      const response = await fetch(process.env.NEXT_PUBLIC_GEMINI_API_URL || "", {
+      const response = await fetch("https://9e73-103-220-42-139.ngrok-free.app/gemini_api", {
         method: "POST",
         body: formdata,
       })
