@@ -27,7 +27,7 @@ const projectInfo = [
 const teamMembers = [
   { name: "Rehan Sayyed", role: "Fullstack Developer", image: "/team/Rehan.jpg", social: { twitter: "https://twitter.com/RehanFerozSayy1", instagram: "https://www.instagram.com/mr_rehan__06/", github: "https://github.com/rsayyed591/", linkedin: "https://www.linkedin.com/in/rehan42/" } },
   { name: "Vivek Chouhan", role: "Fullstack Developer", image: "/team/Vivek.jpg", social: { github: "https://github.com/Viv696969", linkedin: "https://www.linkedin.com/in/vivek-chouhan/" } },
-  { name: "Nishikant Raut", role: "Fullstack Developer", image: "/team/Nishi.jpg", social: { instagram: "https://www.instagram.com/nishiuwu?igsh=MzRlODBiNWFlZA==", github: "https://github.com/Nishikant00", linkedin: "https://www.linkedin.com/in/nishidev/" } },
+  { name: "Nishikant Raut", role: "Fullstack Developer", image: "/team/Nishi.png", social: { instagram: "https://www.instagram.com/nishiuwu?igsh=MzRlODBiNWFlZA==", github: "https://github.com/Nishikant00", linkedin: "https://www.linkedin.com/in/nishidev/" } },
   { name: "Rohit Deshmukh", role: "Fullstack Developer", image: "/team/Rohit.jpg", social: { instagram: "https://www.instagram.com/__._.rohit_.__/", github: "https://github.com/ardie0727", linkedin: "https://www.linkedin.com/in/rohit-deshmukh-/" } },
 ]
 
