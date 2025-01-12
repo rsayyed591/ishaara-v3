@@ -1,0 +1,35 @@
+description: Ultralytics best model trained on data.yaml
+author: Ultralytics
+date: '2025-01-11T08:20:58.878799'
+version: 8.3.59
+license: AGPL-3.0 License (https://ultralytics.com/license)
+docs: https://docs.ultralytics.com
+stride: 32
+task: detect
+batch: 1
+imgsz:
+- 640
+- 640
+names:
+  0: I
+  1: afternoon
+  2: bye
+  3: deaf
+  4: good
+  5: hello
+  6: home
+  7: how are you
+  8: i am fine
+  9: indian
+  10: live
+  11: morning
+  12: namaste
+  13: name
+  14: sorry
+  15: thank you
+  16: time
+  17: 'yes'
+args:
+  batch: 1
+  half: false
+  int8: false
