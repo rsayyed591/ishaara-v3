@@ -99,11 +99,23 @@ export default function TranslatePage() {
       }
     } else {
       try {
+        // Define constraints for front camera
+        const constraints = {
+          video: {
+            facingMode: "user", // Front camera
+          },
+        }
+  
+        // Access the media stream
+        const stream = await navigator.mediaDevices.getUserMedia(constraints)
+  
         if (videoRef.current) {
-          await webcamInstance.current.open(videoRef.current)
+          // Assign the stream to the video element's srcObject
+          videoRef.current.srcObject = stream
         } else {
           throw new Error("Video element not found")
         }
+  
         setIsCameraOn(true)
         setError("")
       } catch (err) {
@@ -112,7 +124,8 @@ export default function TranslatePage() {
       }
     }
   }
-
+  
+    
   const startInfer = () => {
     try {
       setInferRunning(true)
