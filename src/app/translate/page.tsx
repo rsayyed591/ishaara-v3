@@ -39,7 +39,7 @@ export default function TranslatePage() {
     tf.ready().then(async () => {
       try {
         const yolov8 = await tf.loadGraphModel(
-          `${window.location.origin}/best_web_model/model.json`,
+          `https://29b6-43-231-238-206.ngrok-free.app/ws`,
           {
             onProgress: (fractions) => {
               setLoading({ loading: true, progress: fractions })
