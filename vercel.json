@@ -1,4 +1,7 @@
-{ "rewrites": [{ "source": "/(.*)", "destination": "/" }, {
-    "source": "/details/:id",
-    "destination": "/details/:id"
-  }] }
+{
+    "rewrites": [
+      { "source": "/details/:id", "destination": "/details/:id" },
+      { "source": "/(.*)", "destination": "/" }
+    ]
+  }
+  
