@@ -4,11 +4,14 @@ import React from 'react'
 import { HeroHighlight, Highlight } from '@/components/ui/hero-highlight'
 import { ButtonHoverBorderGradient } from '@/components/aceternity'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent } from '@/components/ui/card'
-import { motion, useInView, useMotionValue, useSpring } from 'framer-motion'
-import { ArrowRight, Brain, Zap, Shield, Users, Clock, Target, Smartphone, Languages } from 'lucide-react'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { motion, useMotionValue, useSpring, useInView } from 'framer-motion'
+import { ArrowRight, Brain, Zap, Shield, Users, Clock, Target, Smartphone, Languages, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
 import Image from 'next/image'
+import { Meteors } from '@/components/ui/meteors'
+import { cn } from '@/lib/utils'
+import { GlareCard } from '@/components/ui/glare-card'
 import { useEffect, useRef } from 'react'
 
 // Animated counter component
@@ -50,19 +53,20 @@ export function HomeContent() {
   return (
     <>
       {/* Hero Section */}
-      <HeroHighlight>
-        <div className="text-center max-w-5xl px-4">
+      <HeroHighlight className="relative overflow-hidden">
+        <Meteors number={20} />
+        <div className="text-center max-w-5xl px-4 relative z-10">
           <motion.div 
             className="flex flex-col items-center gap-2"
             initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: [20, -5, 0] }}
-            transition={{ duration: 0.5, ease: [0.4, 0.0, 0.2, 1], }}
-            >
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-neutral-800 dark:text-white leading-tight tracking-tight">
               Convert{" "}
-              <Highlight className="bg-gradient-to-r from-indigo-500 to-purple-500 text-transparent bg-clip-text">Indian Sign Language</Highlight>{" "}
-              To Text In Real-Time With {" "}
-              <Highlight className="bg-gradient-to-r from-purple-500 to-indigo-500 text-transparent bg-clip-text">ISHAARA</Highlight>
+              <Highlight className='bg-gradient-to-r from-indigo-500 to-purple-500 text-transparent bg-clip-text'>Indian Sign Language</Highlight>{" "}
+              To Text In Real-Time With{" "}
+              <Highlight className='bg-gradient-to-r from-indigo-500 to-purple-500 text-transparent bg-clip-text'>ISHAARA</Highlight>
             </h1>
             <motion.p 
               className="text-lg sm:text-xl md:text-2xl mt-6 text-neutral-600 dark:text-neutral-300"
@@ -70,7 +74,8 @@ export function HomeContent() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
             >
-              Bridging communication gaps with cutting-edge AI technology.
+              Trained on <Highlight className='bg-gradient-to-r from-indigo-500 to-purple-500 text-transparent bg-clip-text'>41k+</Highlight> images using <Highlight className='bg-gradient-to-r from-indigo-500 to-purple-500 text-transparent bg-clip-text'>RTX 4060</Highlight>, 
+              refined over <Highlight className='bg-gradient-to-r from-indigo-500 to-purple-500 text-transparent bg-clip-text'>34 hrs</Highlight> and counting for unmatched accuracy
             </motion.p>
             <motion.div 
               className="flex flex-col sm:flex-row gap-4 justify-center mt-8"
@@ -115,6 +120,79 @@ export function HomeContent() {
                 <p className="text-4xl font-bold text-center bg-gradient-to-r from-indigo-500 to-purple-500 text-transparent bg-clip-text">
                   <AnimatedCounter value={item.count} />
                 </p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Ishaara Models Section */}
+      <section className="w-full py-12 md:py-24 bg-background">
+        <div className="container mx-auto px-4">
+          <SectionHeader>Ishaara Models</SectionHeader>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Alphanet",
+                image: "/ishaara models/A.png",
+                details: "Alphabets Only",
+                version: "releasing soon",
+                link: "alphanet"
+              },
+              {
+                name: "Lexnet",
+                image: "/ishaara models/A1.png",
+                details: "Words Only",
+                version: "2.0",
+                link: "lexnet"
+              },
+              {
+                name: "Ishaara Net",
+                image: "/ishaara models/A2.png",
+                details: "Alphabets + Words",
+                version: "releasing soon",
+                link: "ishaaranet"
+              }
+            ].map((model, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
+              >
+                <GlareCard> {/* Added GlareCard */}
+                  <Card className="overflow-hidden">
+                    <CardHeader>
+                      <CardTitle className="text-xl font-bold">{model.name}</CardTitle>
+                    </CardHeader>
+                    <CardContent className="space-y-4">
+                      <div className="relative h-48 w-full">
+                        <Image
+                          src={model.image}
+                          alt={model.name}
+                          fill
+                          className="object-contain rounded-md"
+                        />
+                      </div>
+                      <div className="space-y-2">
+                        <p className="text-muted-foreground">{model.details}</p>
+                        <p className={cn(
+                          "text-sm font-bold",
+                          `${model.version === "releasing soon" ? "text-yellow-500" : "text-green-500"}`
+                        )}>
+                          Version: {model.version}
+                        </p>
+                        <Link href={`/details/${model.link}`}>
+                          <Button className="w-full">
+                            View Details
+                            <ExternalLink className="ml-2 h-4 w-4" />
+                          </Button>
+                        </Link>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </GlareCard> {/* Added GlareCard */}
               </motion.div>
             ))}
           </div>
@@ -191,59 +269,53 @@ export function HomeContent() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-              title: "Sign to Text Conversion",
-              description: "Advanced algorithms for accurate sign language interpretation",
-              icon: <Zap className="h-8 w-8 text-white" />,
-              gradient: "from-yellow-500 to-orange-500",
+                title: "Sign to Text Conversion",
+                description: "Advanced algorithms for accurate sign language interpretation",
+                icon: <Zap className="h-8 w-8 text-white" />,
               },
               {
-              title: "Real-time Processing",
-              description: "Instant translation with minimal latency",
-              icon: <Clock className="h-8 w-8 text-white" />,
-              gradient: "from-green-500 to-teal-500",
+                title: "Real-time Processing",
+                description: "Instant translation with minimal latency",
+                icon: <Clock className="h-8 w-8 text-white" />,
               },
               {
-              title: "High Accuracy",
-              description: "Precise recognition powered by AI",
-              icon: <Target className="h-8 w-8 text-white" />,
-              gradient: "from-red-500 to-pink-500",
+                title: "High Accuracy",
+                description: "Precise recognition powered by AI",
+                icon: <Target className="h-8 w-8 text-white" />,
               },
               {
-              title: "User-friendly Interface",
-              description: "Intuitive design for seamless experience",
-              icon: <Smartphone className="h-8 w-8 text-white" />,
-              gradient: "from-blue-500 to-indigo-500",
+                title: "User-friendly Interface",
+                description: "Intuitive design for seamless experience",
+                icon: <Smartphone className="h-8 w-8 text-white" />,
               },
               {
-              title: "Multiple ISL Support",
-              description: "Support for various Indian Sign Language dialects",
-              icon: <Languages className="h-8 w-8 text-white" />,
-              gradient: "from-purple-500 to-indigo-500",
+                title: "Multiple ISL Support",
+                description: "Support for various Indian Sign Language dialects",
+                icon: <Languages className="h-8 w-8 text-white" />,
               },
               {
-              title: "Continuous Learning",
-              description: "Self-improving system for better results",
-              icon: <Brain className="h-8 w-8 text-white" />,
-              gradient: "from-pink-500 to-red-500",
+                title: "Continuous Learning",
+                description: "Self-improving system for better results",
+                icon: <Brain className="h-8 w-8 text-white" />,
               },
             ].map((feature, index) => (
               <motion.div
-              key={index}
-              className="group h-full"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
+                key={index}
+                className="group h-full"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: index * 0.1 }}
+                viewport={{ once: true }}
               >
-              <Card className="transition-transform duration-300 group-hover:scale-105 h-full dark:bg-black/40">
-                <CardContent className="p-6 flex flex-col items-start h-full">
-                <div className={`rounded-lg bg-gradient-to-r ${feature.gradient} p-3 mb-4`}>
-                  {feature.icon}
-                </div>
-                <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
-                <p className="text-muted-foreground">{feature.description}</p>
-                </CardContent>
-              </Card>
+                <Card className="transition-transform duration-300 group-hover:scale-105 h-full dark:bg-black/40">
+                  <CardContent className="p-6 flex flex-col items-start h-full">
+                    <div className="rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 p-3 mb-4">
+                      {feature.icon}
+                    </div>
+                    <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+                    <p className="text-muted-foreground">{feature.description}</p>
+                  </CardContent>
+                </Card>
               </motion.div>
             ))}
           </div>
@@ -333,7 +405,7 @@ export function HomeContent() {
       </section>
 
       {/* Objectives Section */}
-      <section className="w-full py-12 md:py-24 bg-background text-foreground">
+      <section className="w-full py-12 md:py-24 bg-background">
         <div className="container mx-auto px-4">
           <SectionHeader>Our Objectives</SectionHeader>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -365,21 +437,18 @@ export function HomeContent() {
             ].map((objective, index) => (
               <motion.div
                 key={index}
-                className="group perspective h-full"
+                className="group h-full"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <div className="relative transform transition-all duration-300 group-hover:[transform:rotateX(10deg)_rotateY(10deg)] h-full">
-                  <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 blur transition-opacity duration-300" />
-                  <Card className="relative bg-black/20 backdrop-blur-sm border border-white/10 h-full">
-                    <CardContent className="p-6 flex flex-col h-full">
-                      <h3 className="text-xl font-semibold mb-2">{objective.title}</h3>
-                      <p className="text-muted-foreground">{objective.description}</p>
-                    </CardContent>
-                  </Card>
-                </div>
+                <Card className="h-full transition-all duration-300 group-hover:scale-105 dark:bg-black/40 dark:border-white/10">
+                  <CardContent className="p-6">
+                    <h3 className="text-xl font-semibold mb-2">{objective.title}</h3>
+                    <p className="text-muted-foreground">{objective.description}</p>
+                  </CardContent>
+                </Card>
               </motion.div>
             ))}
           </div>
@@ -412,3 +481,4 @@ export function HomeContent() {
     </>
   )
 }
+

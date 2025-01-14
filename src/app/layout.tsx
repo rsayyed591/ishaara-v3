@@ -16,6 +16,9 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Ishaara - Indian Sign Language Translator",
   description: "Convert Indian Sign Language to text in real-time with Ishaara",
+  icons: {
+    icon: '/ishaaralogo.png',
+  },
 }
 
 export default function RootLayout({
@@ -45,3 +48,4 @@ export default function RootLayout({
     </html>
   )
 }
+

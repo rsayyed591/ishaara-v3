@@ -68,7 +68,7 @@ const SectionTitle = ({ children }: { children: React.ReactNode }) => (
 export default function ModelsPage() {
   return (
     <div className="container mx-auto px-4 pt-24 pb-12">
-      <SectionTitle>Our Models</SectionTitle>
+      <SectionTitle>Research Models</SectionTitle>
       
       <div className="grid grid-cols-1 gap-12 mb-16">
         {models.map((model, index) => (
