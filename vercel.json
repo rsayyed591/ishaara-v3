@@ -1,7 +1,5 @@
 {
-    "rewrites": [
-      { "source": "/details/:id", "destination": "/details/:id" },
-      { "source": "/(.*)", "destination": "/" }
-    ]
-  }
-  
+  "rewrites": [
+    { "source": "/details/:id", "destination": "/details/:id" }
+  ]
+}
