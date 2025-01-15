@@ -4,7 +4,7 @@ import React from 'react'
 import { HeroHighlight, Highlight } from '@/components/ui/hero-highlight'
 import { ButtonHoverBorderGradient } from '@/components/aceternity'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { motion, useMotionValue, useSpring, useInView } from 'framer-motion'
 import { ArrowRight, Brain, Zap, Shield, Users, Clock, Target, Smartphone, Languages, ExternalLink } from 'lucide-react'
 import Link from 'next/link'
@@ -159,40 +159,46 @@ export function HomeContent() {
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
+                whileHover={{ y: -5 }}
                 viewport={{ once: true }}
+                className="h-full"
               >
-                <GlareCard> {/* Added GlareCard */}
-                  <Card className="overflow-hidden">
-                    <CardHeader>
-                      <CardTitle className="text-xl font-bold">{model.name}</CardTitle>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      <div className="relative h-48 w-full">
+                <GlareCard className="h-full">
+                  <Card className="overflow-hidden h-full transition-all duration-300 hover:scale-105 hover:shadow-lg dark:hover:shadow-primary/20">
+                    <CardContent className="p-0 h-full flex flex-col">
+                      <div className="relative h-48 w-full flex-grow pt-4">
                         <Image
-                          src={model.image}
+                          src={model.image || "/placeholder.svg"}
                           alt={model.name}
                           fill
                           className="object-contain rounded-md"
                         />
                       </div>
-                      <div className="space-y-2">
-                        <p className="text-muted-foreground">{model.details}</p>
-                        <p className={cn(
-                          "text-sm font-bold",
-                          `${model.version === "releasing soon" ? "text-yellow-500" : "text-green-500"}`
-                        )}>
-                          Version: {model.version}
-                        </p>
-                        <Link href={`/details/${model.link}`}>
-                          <Button className="w-full">
-                            View Details
-                            <ExternalLink className="ml-2 h-4 w-4" />
-                          </Button>
-                        </Link>
+                      <div className="p-4 flex flex-col justify-between flex-grow">
+                        <div>
+                          <p className="text-muted-foreground mb-2">{model.details}</p>
+                        </div>
+                        <div>
+                          <p className={cn(
+                            "text-sm font-medium mb-4 text-center",
+                            `${model.version === "releasing soon" ? "text-yellow-500" : "text-green-500"}`
+                          )}>
+                            Version: {model.version}
+                          </p>
+                          <Link href={`/details/${model.link}`}>
+                          <Button 
+                              className="w-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white hover:from-indigo-600 hover:to-purple-600 transition-all duration-300"
+                              disabled={model.version === "releasing soon"}
+                            >
+                              {model.version === "releasing soon" ? "Coming Soon" : "View Details"}
+                              {model.version !== "releasing soon" && <ExternalLink className="ml-2 h-4 w-4" />}
+                            </Button>
+                          </Link>
+                        </div>
                       </div>
                     </CardContent>
                   </Card>
-                </GlareCard> {/* Added GlareCard */}
+                </GlareCard>
               </motion.div>
             ))}
           </div>
@@ -358,7 +364,7 @@ export function HomeContent() {
                 viewport={{ once: true }}
               >
                 <Image
-                  src={useCase.image}
+                  src={useCase.image || "/placeholder.svg"}
                   alt={useCase.title}
                   width={600}
                   height={400}
@@ -405,7 +411,7 @@ export function HomeContent() {
       </section>
 
       {/* Objectives Section */}
-      <section className="w-full py-12 md:py-24 bg-background">
+      <section className="w-full py-12 md:py-24 bg-background text-foreground">
         <div className="container mx-auto px-4">
           <SectionHeader>Our Objectives</SectionHeader>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -437,18 +443,21 @@ export function HomeContent() {
             ].map((objective, index) => (
               <motion.div
                 key={index}
-                className="group h-full"
+                className="group perspective h-full"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
                 viewport={{ once: true }}
               >
-                <Card className="h-full transition-all duration-300 group-hover:scale-105 dark:bg-black/40 dark:border-white/10">
-                  <CardContent className="p-6">
-                    <h3 className="text-xl font-semibold mb-2">{objective.title}</h3>
-                    <p className="text-muted-foreground">{objective.description}</p>
-                  </CardContent>
-                </Card>
+                <div className="relative transform transition-all duration-300 group-hover:[transform:rotateX(10deg)_rotateY(10deg)] h-full">
+                  <div className="absolute inset-0 rounded-lg bg-gradient-to-r from-indigo-500 to-purple-500 opacity-0 group-hover:opacity-100 blur transition-opacity duration-300" />
+                  <Card className="relative bg-black/20 backdrop-blur-sm border border-white/10 h-full">
+                    <CardContent className="p-6 flex flex-col h-full">
+                      <h3 className="text-xl font-semibold mb-2">{objective.title}</h3>
+                      <p className="text-muted-foreground">{objective.description}</p>
+                    </CardContent>
+                  </Card>
+                </div>
               </motion.div>
             ))}
           </div>
@@ -468,11 +477,12 @@ export function HomeContent() {
               className="rounded-lg overflow-hidden"
             >
               <Image
-                src="/architecture.gif"
-                alt="Architecture Diagram"
-                width={1200}
-                height={600}
-                className="w-full h-auto"
+              src="/architecture.gif"
+              alt="Architecture Diagram"
+              width={1200}
+              height={600}
+              className="w-full h-auto"
+              unoptimized
               />
             </motion.div>
           </div>
