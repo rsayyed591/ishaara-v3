@@ -176,7 +176,7 @@ export function HomeContent() {
                       </div>
                       <div className="p-4 flex flex-col justify-between flex-grow">
                         <div>
-                          <p className="text-muted-foreground mb-2">{model.details}</p>
+                          <p className="text-muted-foreground mb-2 text-center">{model.details}</p>
                         </div>
                         <div>
                           <p className={cn(
