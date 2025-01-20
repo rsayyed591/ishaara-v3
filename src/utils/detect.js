@@ -20,16 +20,13 @@ const preprocess = (source, modelWidth, modelHeight) => {
     xRatio = maxSize / w
     yRatio = maxSize / h
 
-    return tf.image
-      .resizeBilinear(imgPadded, [modelWidth, modelHeight])
-      .div(255.0)
-      .expandDims(0)
+    return tf.image.resizeBilinear(imgPadded, [modelWidth, modelHeight]).div(255.0).expandDims(0)
   })
 
   return [input, xRatio, yRatio]
 }
 
-export const detect = async (source, model, canvasRef, callback = () => {}) => {
+export const detect = async (source, model, canvasRef, callback = () => {}, onLabelDetected = () => {}) => {
   if (!model || !model.net || !model.inputShape || model.inputShape.length < 3) {
     console.error("Model input shape is invalid")
     return
@@ -37,7 +34,7 @@ export const detect = async (source, model, canvasRef, callback = () => {}) => {
 
   const [modelWidth, modelHeight] = model.inputShape.slice(1, 3)
 
-  let tensors = []
+  const tensors = []
   try {
     const [input, xRatio, yRatio] = preprocess(source, modelWidth, modelHeight)
     tensors.push(input)
@@ -51,20 +48,16 @@ export const detect = async (source, model, canvasRef, callback = () => {}) => {
     tensors.push(transRes)
 
     let boxes, scores, classes
-    [boxes, scores, classes] = tf.tidy(() => {
+    ;[boxes, scores, classes] = tf.tidy(() => {
       const w = transRes.slice([0, 0, 2], [-1, -1, 1])
       const h = transRes.slice([0, 0, 3], [-1, -1, 1])
       const x1 = tf.sub(transRes.slice([0, 0, 0], [-1, -1, 1]), tf.div(w, 2))
       const y1 = tf.sub(transRes.slice([0, 0, 1], [-1, -1, 1]), tf.div(h, 2))
-      
+
       const boxes = tf.concat([y1, x1, tf.add(y1, h), tf.add(x1, w)], 2).squeeze()
-      
+
       const rawScores = transRes.slice([0, 0, 4], [-1, -1, numClass]).squeeze(0)
-      return [
-        boxes,
-        rawScores.max(1),
-        rawScores.argMax(1)
-      ]
+      return [boxes, rawScores.max(1), rawScores.argMax(1)]
     })
     tensors.push(boxes, scores, classes)
 
@@ -78,12 +71,19 @@ export const detect = async (source, model, canvasRef, callback = () => {}) => {
 
     renderBoxes(canvasRef, boxes_data, scores_data, classes_data, [xRatio, yRatio])
 
+    // Call the onLabelDetected callback with the highest confidence label
+    if (classes_data.length > 0) {
+      const highestConfidenceIndex = scores_data.indexOf(Math.max(...scores_data))
+      const detectedLabel = labels[classes_data[highestConfidenceIndex]]
+      onLabelDetected(detectedLabel)
+    }
+
     callback()
   } catch (error) {
     console.error("Detection error:", error)
   } finally {
     // Clean up tensors
-    tensors.forEach(tensor => {
+    tensors.forEach((tensor) => {
       if (tensor && tensor.dispose) {
         tensor.dispose()
       }
@@ -91,7 +91,7 @@ export const detect = async (source, model, canvasRef, callback = () => {}) => {
   }
 }
 
-export const detectVideo = (vidSource, model, canvasRef) => {
+export const detectVideo = (vidSource, model, canvasRef, onLabelDetected) => {
   let isRunning = true
   let frameId = null
 
@@ -106,7 +106,7 @@ export const detectVideo = (vidSource, model, canvasRef) => {
     }
 
     try {
-      await detect(vidSource, model, canvasRef)
+      await detect(vidSource, model, canvasRef, () => {}, onLabelDetected)
     } catch (error) {
       console.error("Frame detection error:", error)
     }

@@ -6,13 +6,11 @@ import "@tensorflow/tfjs-backend-webgl"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { AlertCircle, Play, Square, Camera, CameraOff } from 'lucide-react'
+import { AlertCircle, Play, Square, CameraOff } from "lucide-react"
 import Loader from "@/components/Loader"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Switch } from "@/components/ui/switch"
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { detect, detectVideo } from "@/utils/detect"
+import { detectVideo } from "@/utils/detect"
 import { Webcam } from "@/utils/webcam"
 
 export default function TranslatePage() {
@@ -26,10 +24,12 @@ export default function TranslatePage() {
   })
   const [inferRunning, setInferRunning] = useState(false)
   const [isCameraOn, setIsCameraOn] = useState(false)
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
+  // eslint-disable-next-line
   const [translation, setTranslation] = useState("")
   const [error, setError] = useState("")
   const [stopDetection, setStopDetection] = useState<(() => void) | null>(null)
+  // eslint-disable-next-line
+  const [currentLabel, setCurrentLabel] = useState("")
 
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -38,14 +38,11 @@ export default function TranslatePage() {
   useEffect(() => {
     tf.ready().then(async () => {
       try {
-        const yolov8 = await tf.loadGraphModel(
-          `${window.location.origin}/best_web_model/model.json`,
-          {
-            onProgress: (fractions) => {
-              setLoading({ loading: true, progress: fractions })
-            },
-          }
-        )
+        const yolov8 = await tf.loadGraphModel(`${window.location.origin}/best_web_model/model.json`, {
+          onProgress: (fractions) => {
+            setLoading({ loading: true, progress: fractions })
+          },
+        })
         const inputShape = yolov8.inputs[0].shape || [1, 224, 224, 3] // Default shape if undefined
         const dummyInput = tf.ones(inputShape)
         const warmupResults = yolov8.execute(dummyInput)
@@ -162,7 +159,7 @@ export default function TranslatePage() {
     <div className="container mx-auto px-4 pt-24 pb-12">
       <h1 className="text-3xl font-bold mb-8 pb-2 border-b border-primary">Sign Language Translator</h1>
       {loading.loading && <Loader>Loading model... {(loading.progress * 100).toFixed(2)}%</Loader>}
-      
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Video Section - Takes up 2 columns */}
         <div className="lg:col-span-2">
@@ -171,7 +168,7 @@ export default function TranslatePage() {
               <CardTitle className="flex justify-between items-center">
                 Video Capture
                 <div className="flex items-center gap-2">
-                  <span className="text-sm">{isCameraOn ? 'On' : 'Off'}</span>
+                  <span className="text-sm">{isCameraOn ? "On" : "Off"}</span>
                   <Switch
                     checked={isCameraOn}
                     onCheckedChange={toggleCamera}
@@ -184,16 +181,12 @@ export default function TranslatePage() {
               <div className="relative aspect-video w-full bg-black rounded-lg overflow-hidden">
                 <video
                   ref={videoRef}
-                  className={`absolute inset-0 w-full h-full object-contain ${isCameraOn ? 'block' : 'hidden'}`}
+                  className="absolute inset-0 w-full h-full object-contain"
                   autoPlay
                   playsInline
                   muted
                 />
-                <canvas
-                  ref={canvasRef}
-                  className={`absolute inset-0 w-full h-full object-contain ${isCameraOn ? 'block' : 'hidden'}`}
-                  style={{ transform: 'translateY(-4px)' }} // Adjust detection box position
-                />
+                <canvas ref={canvasRef} className="absolute inset-0 w-full h-full object-contain" />
                 {!isCameraOn && (
                   <div className="absolute inset-0 flex items-center justify-center">
                     <CameraOff className="w-16 h-16 text-gray-400" />
@@ -229,6 +222,16 @@ export default function TranslatePage() {
             </CardContent>
           </Card>
 
+          {/* Current Label Section */}
+          <Card className="border-2 border-blue-500/30">
+            <CardHeader>
+              <CardTitle>Current Detection</CardTitle>
+            </CardHeader>
+            <CardContent>
+              <p className="text-2xl font-bold text-center">{currentLabel || "No sign detected"}</p>
+            </CardContent>
+          </Card>
+
           {/* Translation Section */}
           <Card className="border-2 border-green-500/30">
             <CardHeader>
@@ -242,8 +245,8 @@ export default function TranslatePage() {
                 className="h-32 bg-black/20"
               />
               <div className="flex justify-center">
-                <Button 
-                  onClick={inferRunning ? stopInfer : startInfer} 
+                <Button
+                  onClick={inferRunning ? stopInfer : startInfer}
                   variant={inferRunning ? "destructive" : "default"}
                   disabled={!isCameraOn}
                   className="w-full"
