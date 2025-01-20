@@ -16,8 +16,8 @@ import { Webcam } from "@/utils/webcam"
 export default function TranslatePage() {
   const [loading, setLoading] = useState({ loading: true, progress: 0 })
   const [model, setModel] = useState<{
-    net: tf.GraphModel | null,
-    inputShape: number[],
+    net: tf.GraphModel | null
+    inputShape: number[]
   }>({
     net: null,
     inputShape: [1, 0, 0, 3],
@@ -55,8 +55,8 @@ export default function TranslatePage() {
 
         tf.dispose([warmupResults, dummyInput])
       } catch (error) {
-        console.error('Error loading model:', error)
-        setError('Failed to load the model. Please refresh the page and try again.')
+        console.error("Error loading model:", error)
+        setError("Failed to load the model. Please refresh the page and try again.")
         setLoading({ loading: false, progress: 0 })
       }
     })
@@ -73,15 +73,15 @@ export default function TranslatePage() {
     }
 
     if (isCameraOn && videoRef.current) {
-      videoRef.current.addEventListener('loadeddata', updateCanvasSize)
-      window.addEventListener('resize', updateCanvasSize)
+      videoRef.current.addEventListener("loadeddata", updateCanvasSize)
+      window.addEventListener("resize", updateCanvasSize)
     }
 
     return () => {
       if (videoRef.current) {
-        videoRef.current.removeEventListener('loadeddata', updateCanvasSize)
+        videoRef.current.removeEventListener("loadeddata", updateCanvasSize)
       }
-      window.removeEventListener('resize', updateCanvasSize)
+      window.removeEventListener("resize", updateCanvasSize)
     }
   }, [isCameraOn])
 
@@ -102,17 +102,17 @@ export default function TranslatePage() {
             facingMode: "user", // Front camera
           },
         }
-  
+
         // Access the media stream
         const stream = await navigator.mediaDevices.getUserMedia(constraints)
-  
+
         if (videoRef.current) {
           // Assign the stream to the video element's srcObject
           videoRef.current.srcObject = stream
         } else {
           throw new Error("Video element not found")
         }
-  
+
         setIsCameraOn(true)
         setError("")
       } catch (err) {
@@ -121,16 +121,15 @@ export default function TranslatePage() {
       }
     }
   }
-  
-    
+
   const startInfer = () => {
     try {
       setInferRunning(true)
-      const stopFn = detectVideo(videoRef.current, model, canvasRef.current)
+      const stopFn = detectVideo(videoRef.current, model, canvasRef.current, setCurrentLabel)
       setStopDetection(() => stopFn)
     } catch (error) {
-      console.error('Error starting inference:', error)
-      setError('Failed to start inference. Please try again.')
+      console.error("Error starting inference:", error)
+      setError("Failed to start inference. Please try again.")
       setInferRunning(false)
     }
   }
@@ -212,13 +211,13 @@ export default function TranslatePage() {
               <CardTitle>Instructions</CardTitle>
             </CardHeader>
             <CardContent>
-            <ol className="space-y-2 text-sm">
-  <li>1. Position yourself in front of the camera</li>
-  <li>2. Click the &quot;Start&quot; button to begin sign language detection</li>
-  <li>3. Perform sign language gestures clearly</li>
-  <li>4. View the translated text in the box below</li>
-  <li>5. Click &quot;Stop&quot; when you&apos;re finished</li>
-</ol>
+              <ol className="space-y-2 text-sm">
+                <li>1. Position yourself in front of the camera</li>
+                <li>2. Click the &quot;Start&quot; button to begin sign language detection</li>
+                <li>3. Perform sign language gestures clearly</li>
+                <li>4. View the translated text in the box below</li>
+                <li>5. Click &quot;Stop&quot; when you&apos;re finished</li>
+              </ol>
             </CardContent>
           </Card>
 

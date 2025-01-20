@@ -69,6 +69,10 @@ export const detect = async (source, model, canvasRef, callback = () => {}, onLa
     const scores_data = scores.gather(nms, 0).dataSync()
     const classes_data = classes.gather(nms, 0).dataSync()
 
+    console.log("Detected boxes:", boxes_data)
+    console.log("Detected scores:", scores_data)
+    console.log("Detected classes:", classes_data)
+
     renderBoxes(canvasRef, boxes_data, scores_data, classes_data, [xRatio, yRatio])
 
     // Call the onLabelDetected callback with the highest confidence label
@@ -106,7 +110,16 @@ export const detectVideo = (vidSource, model, canvasRef, onLabelDetected) => {
     }
 
     try {
-      await detect(vidSource, model, canvasRef, () => {}, onLabelDetected)
+      await detect(
+        vidSource,
+        model,
+        canvasRef,
+        () => {},
+        (label) => {
+          console.log("Detected label:", label)
+          onLabelDetected(label)
+        },
+      )
     } catch (error) {
       console.error("Frame detection error:", error)
     }
